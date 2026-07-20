@@ -283,7 +283,7 @@ const Chat = () => {
                         (e.currentTarget.style.backgroundColor = "transparent")
                       }
                     >
-                      🗑️ Delete
+                      Delete
                     </button>
                   </div>
                 )}
