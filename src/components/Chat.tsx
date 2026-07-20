@@ -331,7 +331,7 @@ const Chat = () => {
               border: "none",
               borderRadius: "24px",
               outline: "none",
-              fontSize: "14px",
+              fontSize: "16px",
             }}
           />
           <button

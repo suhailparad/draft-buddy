@@ -183,7 +183,7 @@ const GroupsList = () => {
               border: "none",
               outline: "none",
               backgroundColor: "transparent",
-              fontSize: "14px",
+              fontSize: "16px",
             }}
           />
         </div>
@@ -266,7 +266,7 @@ const GroupsList = () => {
                       border: "1px solid var(--dark-green)",
                       borderRadius: "8px",
                       outline: "none",
-                      fontSize: "14px",
+                      fontSize: "16px",
                     }}
                   />
                 </form>
@@ -430,6 +430,7 @@ const GroupsList = () => {
                   border: "1px solid #e0e0e0",
                   borderRadius: "12px",
                   marginBottom: "16px",
+                  fontSize:"16px",
                   outline: "none",
                 }}
               />
