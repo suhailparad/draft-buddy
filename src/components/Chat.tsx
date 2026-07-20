@@ -165,18 +165,6 @@ const Chat = () => {
               padding: "4px",
             }}
           >
-            🔍
-          </button>
-          <button
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#fff",
-              fontSize: "20px",
-              cursor: "pointer",
-              padding: "4px",
-            }}
-          >
             ⋮
           </button>
         </div>

@@ -270,7 +270,7 @@ const Register = ({ onSwitch }: { onSwitch: () => void }) => {
           <div style={{ flex: 1, height: "1px", backgroundColor: "#e0e0e0" }} />
         </div>
 
-        <button
+        {/* <button
           type="button"
           style={{
             width: "100%",
@@ -312,7 +312,7 @@ const Register = ({ onSwitch }: { onSwitch: () => void }) => {
             />
           </svg>
           Continue with Google
-        </button>
+        </button> */}
 
         <p style={{ textAlign: "center", fontSize: "14px", color: "#667781" }}>
           Already have an account?{" "}
