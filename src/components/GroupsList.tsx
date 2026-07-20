@@ -29,8 +29,10 @@ const GroupsList = () => {
   const [editingGroupName, setEditingGroupName] = useState("");
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const { user } = useAuth();
+  const { user,logout } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const optionRef = useRef<HTMLDivElement>(null);
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -72,16 +74,28 @@ const GroupsList = () => {
   }, [user]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdownId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setActiveDropdownId(null);
+    }
+
+    if (
+      optionRef.current &&
+      !optionRef.current.contains(event.target as Node)
+    ) {
+      setShowOptions(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
 
   const handleAddGroup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,6 +138,16 @@ const GroupsList = () => {
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleLogout = async () => {
+  try {
+    await logout();
+    setSearchQuery("");
+    setShowOptions(false);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   return (
     <div
       style={{
@@ -145,7 +169,7 @@ const GroupsList = () => {
         }}
       >
         <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Draft Buddy</h2>
-        <div style={{ display: "flex", gap: "8px" }}>
+        {/* <div style={{ display: "flex", gap: "8px" }}>
           <button
             style={{
               background: "transparent",
@@ -157,6 +181,70 @@ const GroupsList = () => {
           >
             ⋮
           </button>
+        </div> */}
+        <div
+    ref={optionRef}
+    style={{
+      position: "relative",
+    }}
+  >
+    <button
+      onClick={() => setShowOptions(!showOptions)}
+      style={{
+        background: "transparent",
+        border: "none",
+        color: "#fff",
+        fontSize: "20px",
+        cursor: "pointer",
+      }}
+    >
+      ⋮
+    </button>
+
+    {showOptions && (
+          <div
+              style={{
+                position: "absolute",
+                right: 0,
+                top: "110%",
+                backgroundColor: "#fff",
+                borderRadius: "12px",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+                minWidth: "180px",
+                overflow: "hidden",
+                zIndex: 1000,
+              }}
+            >
+              <button
+                onClick={handleLogout}
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  color: "#dc2626",
+                  fontSize: "15px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#f5f5f5")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                <span className="material-symbols-outlined">
+                  logout
+                </span>
+
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -166,13 +254,19 @@ const GroupsList = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
+            gap: "5px",
             padding: "12px 16px",
             backgroundColor: "#f0f2f5",
             borderRadius: "24px",
           }}
         >
-          <span style={{ fontSize: "16px" }}>🔍</span>
+          {/* <span style={{ fontSize: "16px" }}>🔍</span> */}
+          <span className="material-symbols-outlined" style={{
+            color:"#aaa",
+          }}>
+            search
+          </span>
+          
           <input
             type="text"
             placeholder="Search groups..."
@@ -183,7 +277,7 @@ const GroupsList = () => {
               border: "none",
               outline: "none",
               backgroundColor: "transparent",
-              fontSize: "14px",
+              fontSize: "16px",
             }}
           />
         </div>
@@ -266,7 +360,7 @@ const GroupsList = () => {
                       border: "1px solid var(--dark-green)",
                       borderRadius: "8px",
                       outline: "none",
-                      fontSize: "14px",
+                      fontSize: "16px",
                     }}
                   />
                 </form>
@@ -430,6 +524,7 @@ const GroupsList = () => {
                   border: "1px solid #e0e0e0",
                   borderRadius: "12px",
                   marginBottom: "16px",
+                  fontSize:"16px",
                   outline: "none",
                 }}
               />

@@ -150,7 +150,7 @@ const Register = ({ onSwitch }: { onSwitch: () => void }) => {
                   flex: "1",
                   border: "none",
                   outline: "none",
-                  fontSize: "14px",
+                  fontSize: "16px",
                 }}
               />
             </div>
@@ -199,7 +199,7 @@ const Register = ({ onSwitch }: { onSwitch: () => void }) => {
                   flex: "1",
                   border: "none",
                   outline: "none",
-                  fontSize: "14px",
+                  fontSize: "16px",
                 }}
               />
               <button
