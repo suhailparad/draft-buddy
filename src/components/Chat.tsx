@@ -8,6 +8,7 @@ import {
   onSnapshot,
   orderBy,
   doc,
+  getDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
@@ -83,6 +84,29 @@ const Chat = () => {
     });
     return unsubscribe;
   }, [groupId]);
+
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!groupId || !user) return;
+
+      const groupRef = doc(db, "groups", groupId);
+      const groupSnap = await getDoc(groupRef);
+
+      if (!groupSnap.exists()) {
+        navigate("/", { replace: true });
+        return;
+      }
+
+      const group = groupSnap.data();
+
+      if (group.userId !== user.uid) {
+        navigate("/", { replace: true });
+      }
+    };
+
+    checkAccess();
+  }, [groupId, user, navigate]);
+  
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
