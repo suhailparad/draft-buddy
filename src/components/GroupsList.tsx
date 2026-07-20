@@ -166,13 +166,19 @@ const GroupsList = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
+            gap: "5px",
             padding: "12px 16px",
             backgroundColor: "#f0f2f5",
             borderRadius: "24px",
           }}
         >
-          <span style={{ fontSize: "16px" }}>🔍</span>
+          {/* <span style={{ fontSize: "16px" }}>🔍</span> */}
+          <span className="material-symbols-outlined" style={{
+            color:"#aaa",
+          }}>
+            search
+          </span>
+          
           <input
             type="text"
             placeholder="Search groups..."

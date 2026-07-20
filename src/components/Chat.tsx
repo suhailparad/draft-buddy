@@ -306,19 +306,6 @@ const Chat = () => {
           onSubmit={handleSendMessage}
           style={{ display: "flex", gap: "10px", alignItems: "center" }}
         >
-          <button
-            type="button"
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "24px",
-              color: "#667781",
-              padding: "4px",
-            }}
-          >
-            😊
-          </button>
           <input
             type="text"
             placeholder="Type a message..."
@@ -334,19 +321,6 @@ const Chat = () => {
               fontSize: "16px",
             }}
           />
-          <button
-            type="button"
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "24px",
-              color: "#667781",
-              padding: "4px",
-            }}
-          >
-            📎
-          </button>
           <button
             type="submit"
             disabled={!newMessage.trim()}
