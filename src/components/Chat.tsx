@@ -26,10 +26,15 @@ const Chat = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [activeMessageDropdownId, setActiveMessageDropdownId] = useState<string | null>(null);
+  const [activeMessageDropdownId, setActiveMessageDropdownId] = useState<
+    string | null
+  >(null);
   const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Background pattern SVG data URL
+  const backgroundPattern = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23667781' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -41,7 +46,10 @@ const Chat = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (chatDropdownRef.current && !chatDropdownRef.current.contains(event.target as Node)) {
+      if (
+        chatDropdownRef.current &&
+        !chatDropdownRef.current.contains(event.target as Node)
+      ) {
         setActiveMessageDropdownId(null);
       }
     };
@@ -89,22 +97,22 @@ const Chat = () => {
     if (confirm("Are you sure you want to delete this message?")) {
       await deleteDoc(doc(db, "messages", messageId));
     }
+    setActiveMessageDropdownId(null);
   };
 
   return (
     <div
       style={{
-        flex: 1,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        backgroundColor: "#f0f2f5",
       }}
     >
+      {/* Header */}
       <div
         style={{
-          padding: "16px",
-          backgroundColor: "#008069",
+          padding: "12px 16px",
+          backgroundColor: "var(--dark-green)",
           color: "#fff",
           display: "flex",
           alignItems: "center",
@@ -119,36 +127,73 @@ const Chat = () => {
             color: "#fff",
             cursor: "pointer",
             fontSize: "24px",
+            padding: "4px",
           }}
         >
           ←
         </button>
         <div
           style={{
-            width: "40px",
-            height: "40px",
-            backgroundColor: "#fff",
+            width: "44px",
+            height: "44px",
+            backgroundColor: "rgba(255,255,255,0.2)",
             borderRadius: "50%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#008069",
-            fontSize: "18px",
+            color: "#fff",
+            fontSize: "20px",
+            fontWeight: "600",
           }}
         >
           {groupName.charAt(0).toUpperCase()}
         </div>
-        <h3>{groupName}</h3>
+        <div style={{ flex: "1" }}>
+          <div style={{ fontWeight: 600, fontSize: "16px" }}>{groupName}</div>
+          <div style={{ fontSize: "13px", opacity: 0.8 }}>
+            {messages.length} items
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: "20px",
+              cursor: "pointer",
+              padding: "4px",
+            }}
+          >
+            🔍
+          </button>
+          <button
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: "20px",
+              cursor: "pointer",
+              padding: "4px",
+            }}
+          >
+            ⋮
+          </button>
+        </div>
       </div>
 
+      {/* Chat Area */}
       <div
         style={{
-          flex: 1,
+          flex: "1",
           padding: "16px",
+          paddingBottom: "24px",
           overflowY: "auto",
+          backgroundColor: "#f0f2f5",
+          backgroundImage: backgroundPattern,
           display: "flex",
           flexDirection: "column",
-          gap: "8px",
+          gap: "10px",
         }}
         ref={chatDropdownRef}
       >
@@ -156,26 +201,30 @@ const Chat = () => {
           <div
             key={msg.id}
             style={{
-              maxWidth: "70%",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              backgroundColor: "#d9fdd3",
+              maxWidth: "75%",
+              padding: "10px 14px",
+              borderRadius: "16px",
+              borderTopRightRadius: "4px",
+              backgroundColor: "#e0ffd5",
               alignSelf: "flex-end",
               position: "relative",
+              boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
             }}
           >
-            <div style={{ marginBottom: "4px" }}>{msg.text}</div>
+            <div style={{ marginBottom: "6px", fontSize: "14px" }}>
+              {msg.text}
+            </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-end",
-                gap: "4px",
+                gap: "6px",
               }}
             >
               <div
                 style={{
-                  fontSize: "10px",
+                  fontSize: "11px",
                   color: "#667781",
                   textAlign: "right",
                 }}
@@ -189,15 +238,18 @@ const Chat = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setActiveMessageDropdownId(activeMessageDropdownId === msg.id ? null : msg.id);
+                    setActiveMessageDropdownId(
+                      activeMessageDropdownId === msg.id ? null : msg.id
+                    );
                   }}
                   style={{
                     background: "transparent",
                     border: "none",
                     cursor: "pointer",
-                    padding: "0 4px",
+                    padding: "2px 4px",
                     fontSize: "16px",
                     color: "#667781",
+                    borderRadius: "50%",
                   }}
                 >
                   ⋮
@@ -207,12 +259,13 @@ const Chat = () => {
                     style={{
                       position: "absolute",
                       right: "0",
-                      top: "-120%",
+                      bottom: "100%",
+                      marginBottom: "8px",
                       backgroundColor: "#fff",
-                      boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                      borderRadius: "8px",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+                      borderRadius: "12px",
                       padding: "8px 0",
-                      minWidth: "150px",
+                      minWidth: "160px",
                       zIndex: 100,
                     }}
                   >
@@ -220,20 +273,27 @@ const Chat = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteMessage(msg.id);
-                        setActiveMessageDropdownId(null);
                       }}
                       style={{
                         width: "100%",
-                        padding: "10px 16px",
+                        padding: "12px 16px",
                         textAlign: "left",
                         border: "none",
                         background: "transparent",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
-                        gap: "8px",
+                        gap: "12px",
+                        fontSize: "14px",
                         color: "#dc2626",
+                        transition: "background-color 0.2s",
                       }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#fef2f2")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
                     >
                       🗑️ Delete
                     </button>
@@ -246,32 +306,77 @@ const Chat = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div style={{ padding: "16px" }}>
-        <form onSubmit={handleSendMessage} style={{ display: "flex", gap: "8px" }}>
+      {/* Input Area */}
+      <div
+        style={{
+          padding: "12px 16px",
+          backgroundColor: "#fff",
+          borderTop: "1px solid #f0f0f0",
+        }}
+      >
+        <form
+          onSubmit={handleSendMessage}
+          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+        >
+          <button
+            type="button"
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "24px",
+              color: "#667781",
+              padding: "4px",
+            }}
+          >
+            😊
+          </button>
           <input
             type="text"
-            placeholder="Type a message"
+            placeholder="Type a message..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             style={{
-              flex: 1,
+              flex: "1",
               padding: "12px 16px",
+              backgroundColor: "#f0f2f5",
               border: "none",
               borderRadius: "24px",
               outline: "none",
+              fontSize: "14px",
             }}
           />
           <button
-            type="submit"
+            type="button"
             style={{
-              backgroundColor: "#008069",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "24px",
+              color: "#667781",
+              padding: "4px",
+            }}
+          >
+            📎
+          </button>
+          <button
+            type="submit"
+            disabled={!newMessage.trim()}
+            style={{
+              backgroundColor: newMessage.trim()
+                ? "var(--primary-green)"
+                : "#e0e0e0",
               border: "none",
               borderRadius: "50%",
               width: "48px",
               height: "48px",
               color: "#fff",
-              cursor: "pointer",
+              cursor: newMessage.trim() ? "pointer" : "not-allowed",
               fontSize: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "background-color 0.2s",
             }}
           >
             ➤
