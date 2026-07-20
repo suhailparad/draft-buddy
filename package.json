@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@microlink/react": "^5.5.25",
     "firebase": "^10.14.1",
+    "linkify-react": "^4.3.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.18.1",

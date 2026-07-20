@@ -8,10 +8,15 @@ import {
   onSnapshot,
   orderBy,
   doc,
+  getDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
+// @ts-expect-error - Fix for missing @microlink/react type declarations
+import Microlink from "@microlink/react";
+import Linkify from "linkify-react";
+
 
 interface Message {
   id: string;
@@ -80,6 +85,29 @@ const Chat = () => {
     return unsubscribe;
   }, [groupId]);
 
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!groupId || !user) return;
+
+      const groupRef = doc(db, "groups", groupId);
+      const groupSnap = await getDoc(groupRef);
+
+      if (!groupSnap.exists()) {
+        navigate("/", { replace: true });
+        return;
+      }
+
+      const group = groupSnap.data();
+
+      if (group.userId !== user.uid) {
+        navigate("/", { replace: true });
+      }
+    };
+
+    checkAccess();
+  }, [groupId, user, navigate]);
+  
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !groupId || !newMessage.trim()) return;
@@ -98,6 +126,22 @@ const Chat = () => {
       await deleteDoc(doc(db, "messages", messageId));
     }
     setActiveMessageDropdownId(null);
+  };
+
+  const getFirstUrl = (text: string) => {
+    const match = text.match(
+      /((https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[^\s]*)?)/i
+    );
+
+    if (!match) return null;
+
+    let url = match[0];
+
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = `https://${url}`;
+    }
+
+    return url;
   };
 
   return (
@@ -199,9 +243,36 @@ const Chat = () => {
               boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
             }}
           >
-            <div style={{ marginBottom: "6px", fontSize: "14px" }}>
-              {msg.text}
-            </div>
+            <>
+              {getFirstUrl(msg.text) && (
+                <div style={{ marginBottom: "8px" }}>
+                  <Microlink
+                    url={getFirstUrl(msg.text)!}
+                    size="large"
+                    media="image"
+                    lazy
+                  />
+                </div>
+              )}
+
+              <div
+                style={{
+                  marginBottom: "6px",
+                  fontSize: "14px",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                }}
+              >
+                <Linkify
+                  options={{
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                  }}
+                >
+                  {msg.text}
+                </Linkify>
+              </div>
+            </>
             <div
               style={{
                 display: "flex",
