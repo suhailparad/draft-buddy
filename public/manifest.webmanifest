@@ -1,0 +1,20 @@
+{
+  "name": "Draft Buddy",
+  "short_name": "DraftBuddy",
+  "description": "Store your drafts like movie names, shopping lists, locations to visit!",
+  "theme_color": "#008069",
+  "background_color": "#f0f2f5",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
