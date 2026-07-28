@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -54,27 +54,29 @@ function App() {
   );
 
   return (
-    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
-      <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
-        {activeTab === "home" && <Home onNavigate={handleNavigate} />}
-        {activeTab === "groups" && <GroupsList onNavigate={handleNavigate} />}
-        {activeTab === "favorites" && (
-          <div style={{ padding: "20px", textAlign: "center", paddingTop: "60px" }}>
-            <div style={{ fontSize: "48px", marginBottom: "16px" }}>⭐</div>
-            <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>Favorites</h2>
-            <p style={{ color: "var(--text-secondary)" }}>Star your favorite items to find them easily</p>
-          </div>
-        )}
-        {activeTab === "settings" && (
-          <div style={{ padding: "20px", textAlign: "center", paddingTop: "60px" }}>
-            <div style={{ fontSize: "48px", marginBottom: "16px" }}>⚙️</div>
-            <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>Settings</h2>
-            <p style={{ color: "var(--text-secondary)" }}>Customize your Draft Buddy experience</p>
-          </div>
-        )}
+    <BrowserRouter>
+      <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column" }}>
+        <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+          {activeTab === "home" && <Home onNavigate={handleNavigate} />}
+          {activeTab === "groups" && <GroupsList onNavigate={handleNavigate} />}
+          {activeTab === "favorites" && (
+            <div style={{ padding: "20px", textAlign: "center", paddingTop: "60px" }}>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>⭐</div>
+              <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>Favorites</h2>
+              <p style={{ color: "var(--text-secondary)" }}>Star your favorite items to find them easily</p>
+            </div>
+          )}
+          {activeTab === "settings" && (
+            <div style={{ padding: "20px", textAlign: "center", paddingTop: "60px" }}>
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>⚙️</div>
+              <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "8px" }}>Settings</h2>
+              <p style={{ color: "var(--text-secondary)" }}>Customize your Draft Buddy experience</p>
+            </div>
+          )}
+        </div>
+        <BottomNav />
       </div>
-      <BottomNav />
-    </div>
+    </BrowserRouter>
   );
 }
 
