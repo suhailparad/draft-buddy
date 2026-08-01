@@ -10,7 +10,7 @@ import {
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -29,10 +29,9 @@ const GroupsList = () => {
   const [editingGroupName, setEditingGroupName] = useState("");
   const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const { user,logout } = useAuth();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const optionRef = useRef<HTMLDivElement>(null);
-  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -81,13 +80,6 @@ const GroupsList = () => {
     ) {
       setActiveDropdownId(null);
     }
-
-    if (
-      optionRef.current &&
-      !optionRef.current.contains(event.target as Node)
-    ) {
-      setShowOptions(false);
-    }
   };
 
   document.addEventListener("mousedown", handleClickOutside);
@@ -99,30 +91,36 @@ const GroupsList = () => {
 
   const handleAddGroup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !newGroupName.trim()) return;
-    await addDoc(collection(db, "groups"), {
-      name: newGroupName.trim(),
-      userId: user.uid,
-      createdAt: new Date(),
-    });
+    if (!user) return;
+
+    if (editingGroupId) {
+      // Editing an existing group
+      if (!editingGroupName.trim()) return;
+      await updateDoc(doc(db, "groups", editingGroupId), {
+        name: editingGroupName.trim(),
+      });
+    } else {
+      // Creating a new group
+      if (!newGroupName.trim()) return;
+      await addDoc(collection(db, "groups"), {
+        name: newGroupName.trim(),
+        userId: user.uid,
+        createdAt: new Date(),
+      });
+    }
+
     setNewGroupName("");
+    setEditingGroupId(null);
+    setEditingGroupName("");
     setShowAddModal(false);
   };
 
   const handleEditGroup = (group: Group) => {
     setEditingGroupId(group.id);
     setEditingGroupName(group.name);
-  };
-
-  const handleSaveEdit = async (e: React.FormEvent, groupId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!user || !editingGroupName.trim()) return;
-    await updateDoc(doc(db, "groups", groupId), {
-      name: editingGroupName.trim(),
-    });
-    setEditingGroupId(null);
-    setEditingGroupName("");
+    setNewGroupName("");
+    setActiveDropdownId(null);
+    setShowAddModal(true);
   };
 
   const handleDeleteGroup = async (e: React.MouseEvent, groupId: string) => {
@@ -137,16 +135,6 @@ const GroupsList = () => {
   const filteredGroups = groups.filter((g) =>
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const handleLogout = async () => {
-  try {
-    await logout();
-    setSearchQuery("");
-    setShowOptions(false);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
   return (
     <div
@@ -169,83 +157,26 @@ const GroupsList = () => {
         }}
       >
         <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Draft Buddy</h2>
-        {/* <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#fff",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
+        <button
+          onClick={() => navigate("/profile")}
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "#fff",
+            cursor: "pointer",
+            padding: "4px",
+            display: "flex",
+            alignItems: "center",
+          }}
+          aria-label="Profile"
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: "26px" }}
           >
-            ⋮
-          </button>
-        </div> */}
-        <div
-    ref={optionRef}
-    style={{
-      position: "relative",
-    }}
-  >
-    <button
-      onClick={() => setShowOptions(!showOptions)}
-      style={{
-        background: "transparent",
-        border: "none",
-        color: "#fff",
-        fontSize: "20px",
-        cursor: "pointer",
-      }}
-    >
-      ⋮
-    </button>
-
-    {showOptions && (
-          <div
-              style={{
-                position: "absolute",
-                right: 0,
-                top: "110%",
-                backgroundColor: "#fff",
-                borderRadius: "12px",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-                minWidth: "180px",
-                overflow: "hidden",
-                zIndex: 1000,
-              }}
-            >
-              <button
-                onClick={handleLogout}
-                style={{
-                  width: "100%",
-                  padding: "12px 16px",
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  color: "#dc2626",
-                  fontSize: "15px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f5f5f5")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "transparent")
-                }
-              >
-                <span className="material-symbols-outlined">
-                  logout
-                </span>
-
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+            account_circle
+          </span>
+        </button>
       </div>
 
       {/* Search Bar */}
@@ -336,61 +267,33 @@ const GroupsList = () => {
               >
                 {group.name.charAt(0).toUpperCase()}
               </div>
-              {editingGroupId === group.id ? (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSaveEdit(e, group.id);
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontWeight: 500,
+                    marginBottom: "4px",
+                    fontSize: "16px",
                   }}
-                  style={{ flex: "1" }}
-                  onClick={(e) => e.preventDefault()}
                 >
-                  <input
-                    type="text"
-                    value={editingGroupName}
-                    onChange={(e) => setEditingGroupName(e.target.value)}
-                    autoFocus
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                    }}
-                    style={{
-                      width: "100%",
-                      padding: "8px 12px",
-                      border: "1px solid var(--dark-green)",
-                      borderRadius: "8px",
-                      outline: "none",
-                      fontSize: "16px",
-                    }}
-                  />
-                </form>
-              ) : (
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      fontWeight: 500,
-                      marginBottom: "4px",
-                      fontSize: "16px",
-                    }}
-                  >
-                    {group.name}
-                  </div>
-                  <div style={{ fontSize: "13px", color: "#667781" }}>
-                    {group.itemCount || 0} items
-                  </div>
+                  {group.name}
                 </div>
-              )}
+                <div style={{ fontSize: "13px", color: "#667781" }}>
+                  {group.itemCount || 0} items
+                </div>
+              </div>
             </Link>
-            <div style={{ position: "relative" }} ref={dropdownRef}>
-              {editingGroupId !== group.id && (
-                <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveDropdownId(
-                        activeDropdownId === group.id ? null : group.id
-                      );
-                    }}
+            <div
+              style={{ position: "relative" }}
+              ref={activeDropdownId === group.id ? dropdownRef : null}
+            >
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveDropdownId(
+                      activeDropdownId === group.id ? null : group.id
+                    );
+                  }}
                     style={{
                       background: "transparent",
                       border: "none",
@@ -475,14 +378,20 @@ const GroupsList = () => {
                     </div>
                   )}
                 </>
-              )}
             </div>
           </div>
         ))}
       </div>
 
       {/* FAB for Add Group */}
-      <button className="fab" onClick={() => setShowAddModal(true)}>
+      <button
+        className="fab"
+        onClick={() => {
+          setEditingGroupId(null);
+          setEditingGroupName("");
+          setShowAddModal(true);
+        }}
+      >
         <span>+</span>
       </button>
 
@@ -510,13 +419,19 @@ const GroupsList = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{ fontSize: "18px", marginBottom: "16px" }}>Create New Group</h3>
+            <h3 style={{ fontSize: "18px", marginBottom: "16px" }}>
+              {editingGroupId ? "Edit Group" : "Create New Group"}
+            </h3>
             <form onSubmit={handleAddGroup}>
               <input
                 type="text"
                 placeholder="Enter group name..."
-                value={newGroupName}
-                onChange={(e) => setNewGroupName(e.target.value)}
+                value={editingGroupId ? editingGroupName : newGroupName}
+                onChange={(e) =>
+                  editingGroupId
+                    ? setEditingGroupName(e.target.value)
+                    : setNewGroupName(e.target.value)
+                }
                 autoFocus
                 style={{
                   width: "100%",
@@ -531,7 +446,12 @@ const GroupsList = () => {
               <div style={{ display: "flex", gap: "12px" }}>
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setEditingGroupId(null);
+                    setEditingGroupName("");
+                    setNewGroupName("");
+                  }}
                   style={{
                     flex: "1",
                     padding: "12px",
@@ -557,7 +477,7 @@ const GroupsList = () => {
                     fontSize: "14px",
                   }}
                 >
-                  Create
+                  {editingGroupId ? "Save" : "Create"}
                 </button>
               </div>
             </form>

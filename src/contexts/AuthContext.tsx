@@ -5,6 +5,11 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  updateProfile,
+  updateEmail,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { auth } from "../firebase";
@@ -15,6 +20,10 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateProfileName: (name: string) => Promise<void>;
+  updateUserEmail: (email: string) => Promise<void>;
+  updateUserPassword: (newPassword: string) => Promise<void>;
+  reauthenticateUser: (currentPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,8 +52,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await signOut(auth);
   };
 
+  const updateProfileName = async (name: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+    await updateProfile(currentUser, { displayName: name });
+  };
+
+  const updateUserEmail = async (email: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+    await updateEmail(currentUser, email);
+  };
+
+  const updateUserPassword = async (newPassword: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+    await updatePassword(currentUser, newPassword);
+  };
+
+  const reauthenticateUser = async (currentPassword: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser || !currentUser.email) return;
+    const credential = EmailAuthProvider.credential(
+      currentUser.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(currentUser, credential);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        logout,
+        updateProfileName,
+        updateUserEmail,
+        updateUserPassword,
+        reauthenticateUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
