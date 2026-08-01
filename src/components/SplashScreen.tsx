@@ -21,14 +21,14 @@ export default function SplashScreen() {
 
     const LogoIcon = () => (
         <div className="relative">
-            <div className="w-[88px] h-[88px] md:w-[96px md:h-[96px] rounded-[28px] md:rounded-[30px] bg-primary flex items-center justify-center shadow-xl shadow-primary/20">
+            <div className="w-[88px] h-22 md:w-24 md:h-24 rounded-[28px] md:rounded-[30px] bg-primary flex items-center justify-center shadow-xl shadow-primary/20">
             <LogoMark />
             </div>
         </div>
     );
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-emerald-200/20">
+    <div className="fixed  inset-0 flex items-center justify-center bg-emerald-200/20">
       <div className="flex flex-col items-center">
         <div className="mt-10 md:mt-12 flex justify-center">
             <div className="relative">

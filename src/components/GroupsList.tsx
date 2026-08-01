@@ -136,6 +136,29 @@ const GroupsList = () => {
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const avatarGradients = [
+    "from-emerald-500 to-emerald-700",
+    "from-blue-500 to-blue-700",
+    "from-purple-500 to-purple-700",
+    "from-pink-500 to-rose-600",
+    "from-orange-400 to-orange-600",
+    "from-cyan-500 to-sky-600",
+    "from-indigo-500 to-violet-700",
+    "from-red-500 to-red-700",
+    "from-yellow-400 to-amber-600",
+    "from-teal-500 to-teal-700",
+  ];
+
+  const getAvatarGradient = (id: string) => {
+    let hash = 0;
+
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    return avatarGradients[Math.abs(hash) % avatarGradients.length];
+  };
+
   return (
     <div
       style={{
@@ -146,72 +169,52 @@ const GroupsList = () => {
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          padding: "16px",
-          backgroundColor: "var(--dark-green)",
-          color: "#fff",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2 style={{ fontSize: "20px", fontWeight: 600 }}>Draft Buddy</h2>
-        <button
-          onClick={() => navigate("/profile")}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "#fff",
-            cursor: "pointer",
-            padding: "4px",
-            display: "flex",
-            alignItems: "center",
-          }}
-          aria-label="Profile"
-        >
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: "26px" }}
-          >
-            account_circle
-          </span>
-        </button>
-      </div>
+      <header className="px-6 pt-6 pb-5">
+        <div className="flex items-center justify-between">
+
+            <h1 className="text-2xl font-black">
+                <span className="text-emerald-600">Draft</span>
+                <span className="ml-0.5">Buddy</span>
+            </h1>
+            <button
+                onClick={() => navigate("/profile")}
+                className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100 transition"
+            >
+                <span className="material-symbols-outlined text-slate-500">
+                    more_horiz
+                </span>
+            </button>
+
+        </div>
+      </header>
 
       {/* Search Bar */}
-      <div style={{ padding: "12px", backgroundColor: "#fff" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-            padding: "12px 16px",
-            backgroundColor: "#f0f2f5",
-            borderRadius: "24px",
-          }}
-        >
-          {/* <span style={{ fontSize: "16px" }}>🔍</span> */}
-          <span className="material-symbols-outlined" style={{
-            color:"#aaa",
-          }}>
-            search
-          </span>
-          
-          <input
-            type="text"
-            placeholder="Search groups..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              flex: "1",
-              border: "none",
-              outline: "none",
-              backgroundColor: "transparent",
-              fontSize: "16px",
-            }}
-          />
-        </div>
+      <div className="px-6 mb-4">
+          <div className="flex items-center rounded-full bg-slate-100 px-5 h-12">
+              <span className="material-symbols-outlined text-slate-400">
+                  search
+              </span>
+              <input
+                  placeholder="Search spaces..."
+                  value={searchQuery}
+                  onChange={(e)=>setSearchQuery(e.target.value)}
+                  className="ml-3 bg-transparent flex-1 outline-none text-[16px]"
+              />
+          </div>
+      </div>
+
+      <div className="flex justify-between items-center px-6 mb-1">
+          <h2 className="font-semibold text-[14px] text-gray-500">
+              Your Spaces
+          </h2>
+
+          {/* <button className="text-sm text-slate-500 flex items-center gap-1">
+              Recently updated
+              <span className="material-symbols-outlined text-lg">
+                  keyboard_arrow_down
+              </span>
+          </button> */}
+
       </div>
 
       {/* Groups List */}
@@ -222,164 +225,50 @@ const GroupsList = () => {
           paddingBottom: "80px", // Space for bottom nav
         }}
       >
-        {filteredGroups.map((group) => (
-          <div
-            key={group.id}
-            style={{
-              padding: "12px 16px",
-              borderBottom: "1px solid #f0f0f0",
-              backgroundColor: "#fff",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "12px",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f2f5")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
-          >
-            <Link
+        {filteredGroups.map((group, index) => (
+          <Link
               to={`/chat/${group.id}`}
               state={{ groupName: group.name }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                flex: "1",
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
+              className="group flex items-center px-6 py-3 hover:bg-slate-100 active:bg-slate-100 transition"
+          >
               <div
-                style={{
-                  width: "52px",
-                  height: "52px",
-                  backgroundColor: "var(--dark-green)",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  fontSize: "22px",
-                  fontWeight: 600,
-                }}
+                className={`w-12 h-12 rounded-full bg-gradient-to-br ${getAvatarGradient(
+                  group.id
+                )} text-white flex items-center justify-center font-bold text-xl shrink-0`}
               >
                 {group.name.charAt(0).toUpperCase()}
               </div>
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontWeight: 500,
-                    marginBottom: "4px",
-                    fontSize: "16px",
-                  }}
-                >
-                  {group.name}
-                </div>
-                <div style={{ fontSize: "13px", color: "#667781" }}>
-                  {group.itemCount || 0} items
-                </div>
+
+              {/* Title */}
+              <div className={`ml-4 flex-1 min-w-0 border-b border-slate-200 pb-2.5 ${
+                  index !== filteredGroups.length - 1
+                    ? "border-b border-slate-200"
+                    : ""
+                } `}>
+                  <div className="flex justify-between">
+                      <h3 className="font-bold text-[15px] truncate">
+                          {group.name}
+                      </h3>
+                      <span className="text-sm text-slate-400">
+                          {new Intl.DateTimeFormat('en-US', { 
+                            month: 'short', 
+                            day: 'numeric' 
+                          }).format(group.createdAt)}
+                      </span>
+
+                  </div>
+
+                  <p className="text-slate-500 truncate mt-1">
+
+                      {group.itemCount
+                          ? `${group.itemCount} notes`
+                          : "Empty space"}
+
+                  </p>
+
               </div>
-            </Link>
-            <div
-              style={{ position: "relative" }}
-              ref={activeDropdownId === group.id ? dropdownRef : null}
-            >
-              <>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveDropdownId(
-                      activeDropdownId === group.id ? null : group.id
-                    );
-                  }}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      padding: "8px",
-                      cursor: "pointer",
-                      color: "#667781",
-                      fontSize: "20px",
-                    }}
-                  >
-                    ⋮
-                  </button>
-                  {activeDropdownId === group.id && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "0",
-                        top: "100%",
-                        backgroundColor: "#fff",
-                        boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-                        borderRadius: "12px",
-                        padding: "8px 0",
-                        minWidth: "160px",
-                        zIndex: 100,
-                      }}
-                    >
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditGroup(group);
-                          setActiveDropdownId(null);
-                        }}
-                        style={{
-                          width: "100%",
-                          padding: "12px 16px",
-                          textAlign: "left",
-                          border: "none",
-                          background: "transparent",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                          fontSize: "14px",
-                          transition: "background-color 0.2s",
-                        }}
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.backgroundColor = "#f0f2f5")
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.backgroundColor = "transparent")
-                        }
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteGroup(e, group.id);
-                        }}
-                        style={{
-                          width: "100%",
-                          padding: "12px 16px",
-                          textAlign: "left",
-                          border: "none",
-                          background: "transparent",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                          fontSize: "14px",
-                          color: "#dc2626",
-                          transition: "background-color 0.2s",
-                        }}
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.backgroundColor = "#fef2f2")
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.backgroundColor = "transparent")
-                        }
-                      >
-                      Delete
-                      </button>
-                    </div>
-                  )}
-                </>
-            </div>
-          </div>
+
+          </Link>
         ))}
       </div>
 
