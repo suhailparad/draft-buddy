@@ -4,8 +4,6 @@ import AuthHero from "./auth/AuthHero";
 import AuthCard from "./auth/AuthCard";
 import AuthInput from "./auth/AuthInput";
 import AuthButton from "./auth/AuthButton";
-import GoogleButton from "./auth/GoogleButton";
-import Divider from "./auth/Divider";
 import AuthFooter from "./auth/AuthFooter";
 import AuthError from "./auth/AuthError";
 
@@ -13,10 +11,8 @@ const Register = ({ onSwitch }: { onSwitch: () => void }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, updateProfileName } = useAuth();
 

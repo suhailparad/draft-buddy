@@ -4,8 +4,6 @@ import AuthHero from "./auth/AuthHero";
 import AuthCard from "./auth/AuthCard";
 import AuthInput from "./auth/AuthInput";
 import AuthButton from "./auth/AuthButton";
-import GoogleButton from "./auth/GoogleButton";
-import Divider from "./auth/Divider";
 import AuthFooter from "./auth/AuthFooter";
 import AuthError from "./auth/AuthError";
 
