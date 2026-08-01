@@ -28,11 +28,11 @@ export default function SplashScreen() {
     );
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-linear-to-b from-primary/5 via-green-50/40 to-background">
+    <div className="fixed inset-0 flex items-center justify-center bg-emerald-200/20">
       <div className="flex flex-col items-center">
         <div className="mt-10 md:mt-12 flex justify-center">
             <div className="relative">
-                <div className="absolute inset-0 animate-ping rounded-full bg-emerald-500/20" />
+                <div className="absolute inset-0 animate-ping rounded-[28px] bg-emerald-600/30" />
 
                 <div className="relative flex h-20 w-20 items-center justify-center rounded-full">
                 <LogoIcon />
@@ -51,6 +51,7 @@ export default function SplashScreen() {
         </p>
 
       </div>
+      <div className="absolute bottom-4 text-[13px] text-slate-400">Version 0.0.1</div>
     </div>
   );
 }
