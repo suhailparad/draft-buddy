@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import GroupsList from './components/GroupsList';
 import Chat from './components/Chat';
+import Profile from './components/Profile';
 
 function App() {
   const { user, loading } = useAuth();
@@ -39,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<GroupsList />} />
           <Route path="/chat/:groupId" element={<Chat />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
