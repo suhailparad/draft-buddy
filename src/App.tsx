@@ -6,24 +6,14 @@ import Register from './components/Register';
 import GroupsList from './components/GroupsList';
 import Chat from './components/Chat';
 import Profile from './components/Profile';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
   const { user, loading } = useAuth();
   const [showRegister, setShowRegister] = useState(false);
 
   if (loading) {
-    return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        Loading...
-      </div>
-    );
+    return <SplashScreen />;
   }
 
   if (!user) {
