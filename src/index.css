@@ -1,87 +1,94 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --primary-green: #008069;
-  --dark-green: #005f4b;
-  --light-green: #d9fdd3;
-  --bg-color: #f8f9fa;
+  --primary-green: #0F766E;
+  --dark-green: #115E59;
+  --light-green: #DCFCE7;
+  --bg-color: #F8FAFC;
+}
+
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
   background-color: var(--bg-color);
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
 }
 
-.fab {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--primary-green);
-  border: none;
-  color: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 24px;
-  line-height: 1;
-  font-weight: 300;
-
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease;
-  z-index: 10;
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0);
+  }
 }
 
-.fab span {
-  line-height: 1;
-  transform: translateY(-1px); /* or 1px depending on the font */
+@layer components {
+  .fab {
+    @apply fixed bottom-5 right-5 w-10 h-10 rounded-full bg-primary border-none text-white flex items-center justify-center text-2xl font-normal cursor-pointer transition-all duration-200 ease-in-out z-10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    line-height: 1;
+  }
+
+  .fab span {
+    @apply leading-none;
+    transform: translateY(-1px);
+  }
+
+  .fab:hover {
+    transform: scale(1.05);
+  }
+
+  .bottom-nav {
+    @apply fixed bottom-0 w-full h-16 bg-white border-t flex justify-around items-center z-[100];
+    border-color: #E2E8F0;
+  }
+
+  .nav-item {
+    @apply flex flex-col items-center gap-1 cursor-pointer transition-colors duration-200 ease-in-out;
+    color: #64748B;
+  }
+
+  .nav-item.active {
+    @apply text-primary;
+  }
 }
 
-.fab:hover {
-  transform: scale(1.05);
+.fade-in-delay-1 {
+  animation-delay: 0.1s;
+  opacity: 0;
 }
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 64px;
-  background-color: white;
-  border-top: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 100;
+.fade-in-delay-2 {
+  animation-delay: 0.2s;
+  opacity: 0;
 }
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  color: #667781;
-  transition: color 0.2s ease;
+.fade-in-delay-3 {
+  animation-delay: 0.3s;
+  opacity: 0;
 }
-
-.nav-item.active {
-  color: var(--primary-green);
+.fade-in-delay-4 {
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+.fade-in-delay-5 {
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+.slide-up-delay-1 {
+  animation-delay: 0.25s;
+  opacity: 0;
 }
