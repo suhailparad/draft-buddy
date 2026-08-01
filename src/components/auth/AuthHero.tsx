@@ -153,7 +153,10 @@ const AuthHero = ({ showIllustration = true }: AuthHeroProps) => {
 
         <h1 className="mt-6 md:mt-7 text-3xl md:text-5xl font-bold tracking-tight animate-fade-in fade-in-delay-1">
           <span className="text-primary">Draft</span>
-          <span className="text-primary-text">Buddy</span>
+          <span className="text-primary-text ml-0.5">Buddy</span>
+
+          {/* <span className="text-primary">Drop</span>
+          <span className="text-primary-text">Note</span> */}
         </h1>
 
         <p className="mt-1 md:mt-4 text-[12px] md:text-2xl text-secondary-text font-medium animate-fade-in fade-in-delay-2">

@@ -152,7 +152,7 @@ const AuthInput = ({
           required={required}
           aria-label={ariaLabel || placeholder}
           autoComplete={autoComplete}
-          className="flex-1 h-full bg-transparent border-none outline-hidden text-[16px] text-primary-text font-medium placeholder:text-secondary-text placeholder:font-normal placeholder:text-[14px] w-full"
+          className="flex-1 h-full bg-transparent border-none outline-hidden text-[16px] text-primary-text font-normal placeholder:text-secondary-text placeholder:font-normal placeholder:text-[14px] w-full"
           style={{ WebkitAppearance: "none" }}
         />
         {showPasswordToggle && type === "password" && (

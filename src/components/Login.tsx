@@ -38,7 +38,7 @@ const Login = ({ onSwitch }: { onSwitch: () => void }) => {
             <h2 className="text-xl md:text-[26px] font-bold text-primary-text tracking-tight leading-tight">
               Welcome back! ✋
             </h2>
-            <p className="text-[13px] text-secondary-text font-medium leading-relaxed">
+            <p className="text-[13px] text-secondary-text font-normal leading-relaxed">
               Sign in to continue
             </p>
           </div>
