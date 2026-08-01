@@ -8,7 +8,7 @@ import {
   orderBy,
   doc,
   updateDoc,
-  deleteDoc,
+  // deleteDoc,
 } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
@@ -27,7 +27,7 @@ const GroupsList = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [editingGroupName, setEditingGroupName] = useState("");
-  const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
+  // const [activeDropdownId, setActiveDropdownId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const GroupsList = () => {
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node)
     ) {
-      setActiveDropdownId(null);
+      // setActiveDropdownId(null);
     }
   };
 
@@ -115,22 +115,22 @@ const GroupsList = () => {
     setShowAddModal(false);
   };
 
-  const handleEditGroup = (group: Group) => {
-    setEditingGroupId(group.id);
-    setEditingGroupName(group.name);
-    setNewGroupName("");
-    setActiveDropdownId(null);
-    setShowAddModal(true);
-  };
+  // const handleEditGroup = (group: Group) => {
+  //   setEditingGroupId(group.id);
+  //   setEditingGroupName(group.name);
+  //   setNewGroupName("");
+  //   setActiveDropdownId(null);
+  //   setShowAddModal(true);
+  // };
 
-  const handleDeleteGroup = async (e: React.MouseEvent, groupId: string) => {
-    e.stopPropagation();
-    if (!user) return;
-    if (confirm("Are you sure you want to delete this group?")) {
-      await deleteDoc(doc(db, "groups", groupId));
-    }
-    setActiveDropdownId(null);
-  };
+  // const handleDeleteGroup = async (e: React.MouseEvent, groupId: string) => {
+  //   e.stopPropagation();
+  //   if (!user) return;
+  //   if (confirm("Are you sure you want to delete this group?")) {
+  //     await deleteDoc(doc(db, "groups", groupId));
+  //   }
+  //   setActiveDropdownId(null);
+  // };
 
   const filteredGroups = groups.filter((g) =>
     g.name.toLowerCase().includes(searchQuery.toLowerCase())
