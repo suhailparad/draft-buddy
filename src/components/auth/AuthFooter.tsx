@@ -11,7 +11,7 @@ const AuthFooter = ({ questionText, actionText, onAction }: AuthFooterProps) => 
       <button
         type="button"
         onClick={onAction}
-        className="text-primary font-bold hover:text-primary-hover transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-1 py-0.5 -mx-1 -my-0.5"
+        className="text-primary font-bold hover:text-primary-hover transition-colors duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-1 py-0.5 -mx-1 -my-0.5"
         aria-label={actionText}
       >
         {actionText}

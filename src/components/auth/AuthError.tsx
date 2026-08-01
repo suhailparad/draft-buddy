@@ -11,7 +11,7 @@ const AuthError = ({ message }: AuthErrorProps) => {
       className="w-full p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 animate-fade-in"
     >
       <svg
-        className="flex-shrink-0 w-5 h-5 text-red-500 mt-0.5"
+        className="shrink-0 w-5 h-5 text-red-500 mt-0.5"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

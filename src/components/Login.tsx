@@ -92,7 +92,7 @@ const Login = ({ onSwitch }: { onSwitch: () => void }) => {
               {/* <div className="text-right mt-3">
                 <button
                   type="button"
-                  className="text-[15px] font-semibold text-primary hover:text-primary-hover transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded px-1.5 py-1 -mx-1.5 -my-1"
+                  className="text-[15px] font-semibold text-primary hover:text-primary-hover transition-colors duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded-sm px-1.5 py-1 -mx-1.5 -my-1"
                   tabIndex={0}
                 >
                   Forgot password?

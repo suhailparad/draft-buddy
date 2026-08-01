@@ -136,7 +136,7 @@ interface AuthHeroProps {
 
 const AuthHero = ({ showIllustration = true }: AuthHeroProps) => {
   return (
-    <div className="relative w-full overflow-hidden bg-gradient-to-b from-primary/5 via-green-50/40 to-background">
+    <div className="relative w-full overflow-hidden bg-linear-to-b from-primary/5 via-green-50/40 to-background">
       <div
         className="absolute -top-40 left-1/2 -translate-x-1/2 w-[520px] h-[420px] rounded-full bg-primary/8 blur-3xl pointer-events-none"
         aria-hidden="true"

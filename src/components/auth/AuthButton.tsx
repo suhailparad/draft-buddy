@@ -46,7 +46,7 @@ const AuthButton = ({
     text-[17px] font-semibold tracking-wide
     transition-all duration-200 ease-out
     transform active:scale-[0.985]
-    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
+    focus:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
     disabled:cursor-not-allowed
   `;
 

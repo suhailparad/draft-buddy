@@ -142,7 +142,7 @@ const AuthInput = ({
           hover:border-slate-300"
       >
         {IconComponent && (
-          <IconComponent className="flex-shrink-0 text-secondary-text group-focus-within:text-primary transition-colors duration-200" />
+          <IconComponent className="shrink-0 text-secondary-text group-focus-within:text-primary transition-colors duration-200" />
         )}
         <input
           type={actualType}
@@ -152,7 +152,7 @@ const AuthInput = ({
           required={required}
           aria-label={ariaLabel || placeholder}
           autoComplete={autoComplete}
-          className="flex-1 h-full bg-transparent border-none outline-none text-[16px] text-primary-text font-medium placeholder:text-secondary-text placeholder:font-normal placeholder:text-[14px] w-full"
+          className="flex-1 h-full bg-transparent border-none outline-hidden text-[16px] text-primary-text font-medium placeholder:text-secondary-text placeholder:font-normal placeholder:text-[14px] w-full"
           style={{ WebkitAppearance: "none" }}
         />
         {showPasswordToggle && type === "password" && (
@@ -160,7 +160,7 @@ const AuthInput = ({
             type="button"
             onClick={onTogglePassword}
             aria-label={showPassword ? "Hide password" : "Show password"}
-            className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-secondary-text hover:text-primary-text transition-colors duration-200 rounded-xl hover:bg-slate-100 active:scale-95 transform transition-transform"
+            className="shrink-0 w-9 h-9 flex items-center justify-center text-secondary-text hover:text-primary-text transition-colors duration-200 rounded-xl hover:bg-slate-100 active:scale-95 transform transition-transform"
           >
             {showPassword ? (
               <EyeOffIcon className="text-current" />
